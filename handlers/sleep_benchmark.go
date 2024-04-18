@@ -42,8 +42,8 @@ func SleepN(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	receiveCnt := 1
-	sendCnt := 1
+	receiveCnt := 0
+	sendCnt := 0
 	for receiveCnt < n {
 		select {
 		case sem <- true:
@@ -61,8 +61,8 @@ func SleepN(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(receiveCnt, sendCnt)
 
-	w.Write([]byte(fmt.Sprintf("Benchmark time taken: %v", time.Since(t))))
-	w.Write([]byte(fmt.Sprintf("\nRequests served: %d", n)))
+	w.Write([]byte(fmt.Sprintf("Benchmark sleep/%d time taken: %v", n, time.Since(t))))
+	w.Write([]byte(fmt.Sprintf("\nRequests served: %d", receiveCnt)))
 	w.Write([]byte(fmt.Sprintf("\nSlowest requests time taken: %v", m)))
-	w.Write([]byte(fmt.Sprintf("\nRequests total time: %v", rqsTime)))
+	w.Write([]byte(fmt.Sprintf("\nRequests total computation time: %v", rqsTime)))
 }
