@@ -17,9 +17,6 @@ func makeRequest(c chan time.Duration, sem *chan bool) {
 		fmt.Println(err.Error())
 	}
 
-	type ResponseSchema struct {
-		Time string `json:"timeTaken"`
-	}
 	rspBody := ResponseSchema{}
 	defer rsp.Body.Close()
 	json.NewDecoder(rsp.Body).Decode(&rspBody)
